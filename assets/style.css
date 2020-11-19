@@ -1,0 +1,23 @@
+@font-face {
+	font-family: "Hind";
+	font-style: normal;
+	font-weight: 400;
+	font-display: block;
+	src: url("assets/hind-regular.ttf");
+}
+
+html {
+	height: 100vh;
+	background-color: #1f1f1f;
+	color: #ededed;
+	user-select: none;
+	-moz-user-select: none;
+}
+
+body {
+	height: 100vh;
+	font-family: "Hind";
+	font-size: 14px;
+	font-weight: normal;
+	margin: 0;
+}

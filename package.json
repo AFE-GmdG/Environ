@@ -1,0 +1,22 @@
+{
+  "name": "environ",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "webpack-dev-server --mode=development",
+    "prebuild:dev": "rimraf dist",
+    "build:dev": "webpack --mode=development",
+    "prebuild": "rimraf dist/*",
+    "build": "webpack --mode=production"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "file-loader": "6.2.0",
+    "html-webpack-plugin": "4.5.0",
+    "rimraf": "3.0.2",
+    "ts-loader": "8.0.11",
+    "typescript": "4.0.5",
+    "webpack": "5.6.0",
+    "webpack-cli": "4.2.0",
+    "webpack-dev-server": "3.11.0"
+  }
+}
