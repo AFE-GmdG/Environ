@@ -1,1 +1,1 @@
-console.log(self);
+console.log(process.env.NODE_ENV);

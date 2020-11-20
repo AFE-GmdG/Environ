@@ -1,11 +1,14 @@
 /**
- * Webpack 5 configuration file
- * ©2020 - Andreas Friedel
+ * Webpack 4 configuration file (Terser Version)
+ * see https://webpack.js.org/configuration/
+ * see https://webpack.js.org/configuration/dev-server/
+ * ©2019 - Andreas Friedel
  */
 
 "use strict";
 
 const webpack = require("webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const process = require("process");
@@ -15,7 +18,7 @@ const cwd = process.cwd();
 const config = {
 	name: "Environ",
 
-	target: "es2020",
+	target: "web",
 
 	context: path.resolve(cwd, "src"),
 
@@ -24,7 +27,7 @@ const config = {
 	},
 
 	resolve: {
-		extensions: [".tsx", ".ts", ".js"],
+		extensions: [".tsx", ".ts", ".js"]
 	},
 
 	output: {
@@ -36,7 +39,7 @@ const config = {
 
 	module: {
 		rules: [{
-			test: /\tsx?$/,
+			test: /\.tsx?$/,
 			exclude: /node_modules/,
 			use: [{
 				loader: "ts-loader"
@@ -47,13 +50,19 @@ const config = {
       use: [{
         loader: "file-loader",
         options: {
-          name: "favicon.ico"
-        }
-      }]
+					name: "favicon.ico"
+				}
+			}]
 		}]
 	},
 
 	plugins: [
+		new CopyWebpackPlugin({
+			patterns: [{
+				from: path.resolve(cwd, "src/assets"),
+				to: path.resolve(cwd, "dist/assets")
+			}]
+		}),
 		new HtmlWebpackPlugin({
 			baseUrl: "/",
 			filename: "index.html",
@@ -64,32 +73,105 @@ const config = {
 				collapseWhitespace: true
 			}
 		})
-	],
-
-	devServer: {
-		historyApiFallback: true,
-		public: "http://localhost:8080",
-		disableHostCheck: true,
-		port: 8080,
-		contentBase: path.resolve(cwd, "dist"),
-		compress: true,
-		headers: {},
-		host: "0.0.0.0",
-		inline: true,
-		hot: false,
-		quiet: false,
-		stats: {
-			colors: true
-		}
-	}
+	]
 };
 
 module.exports = (env, argv) => {
-	if (argv.name === "development") {
-		config.devtool = "source-map";
-	} else {
-		config.devtool = false;
+	if (env === "development" || (argv && argv.name === "development")) {
+		return {
+			...config,
+
+			devtool: "source-map",
+
+			optimization: {
+				noEmitOnErrors: true,
+				namedModules: true,
+				namedChunks: true,
+				minimize: false,
+				runtimeChunk: "single",
+				splitChunks: {
+					chunks: "all",
+					maxInitialRequests: Infinity,
+					minSize: 0,
+					cacheGroups: {
+						named: {
+							test: /[\\/]node_modules[\\/]/,
+							name(module) {
+								return "vendor";
+							}
+						}
+					}
+				}
+			},
+
+			plugins: [
+				...config.plugins,
+
+				new webpack.DefinePlugin({
+					"process.env": {
+						NODE_ENV: "'development'",
+						VERSION: JSON.stringify(require("./package.json").version)
+					}
+				})
+			],
+
+			devServer: {
+				writeToDisk: true,
+				historyApiFallback: true,
+				public: "http://localhost:8080",
+				disableHostCheck: true,
+				port: 8080,
+				contentBase: path.resolve(cwd, "dist"),
+				compress: true,
+				headers: {},
+				host: "0.0.0.0",
+				inline: true,
+				hot: false,
+				quiet: false,
+				stats: {
+					colors: true
+				}
+			}
+		};
+
 	}
 
-	return config;
+	return {
+		...config,
+
+		devtool: false,
+
+		optimization: {
+			noEmitOnErrors: true,
+			namedModules: false,
+			namedChunks: false,
+			minimize: true,
+			runtimeChunk: "single",
+			splitChunks: {
+				chunks: "all",
+				maxInitialRequests: Infinity,
+				minSize: 0,
+				cacheGroups: {
+					named: {
+						test: /[\\/]node_modules[\\/]/,
+						name(module) {
+							return "vendor";
+						}
+					}
+				}
+			}
+		},
+
+		plugins: [
+			...config.plugins,
+
+			new webpack.DefinePlugin({
+				"process.env": {
+					NODE_ENV: "'production'",
+					VERSION: JSON.stringify(require("./package.json").version)
+				}
+			})		]
+
+	};
+
 };

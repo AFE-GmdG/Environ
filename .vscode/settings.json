@@ -2,7 +2,7 @@
 	"files.exclude": {
 		".vscode": true,
 		"node_modules": true,
-		"dist": true,
+		"dist": false,
 		"**/.git": true,
 		".gitignore": true,
 		"*.code-workspace": true,
