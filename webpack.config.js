@@ -23,7 +23,7 @@ const config = {
 	context: path.resolve(cwd, "src"),
 
 	entry: {
-		app: ["./app.ts"]
+		app: ["./app.tsx"]
 	},
 
 	resolve: {

@@ -29,7 +29,8 @@
     "moduleResolution": "node",               /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
     "experimentalDecorators": true,           /* Enables experimental support for ES7 decorators. */
     "removeComments": true,                   /* Do not emit comments to output. */
-    "jsx": "preserve",                        /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
+    "jsx": "react",                           /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
+    "jsxFactory": "JSX.createElement",
     "skipLibCheck": true,                     /* Skip type checking of declaration files. */
     "lib": [                                  /* Specify library files to be included in the compilation. */
       "dom",
