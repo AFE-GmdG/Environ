@@ -45,6 +45,12 @@ const config = {
 				loader: "ts-loader"
 			}]
     }, {
+			test: /\.[fv]s$/,
+			exclude: /node_modules/,
+			use: [{
+				loader: "../lib/string-loader"
+			}]
+    }, {
       test: /favicon.ico$/,
       exclude: /node_modules/,
       use: [{

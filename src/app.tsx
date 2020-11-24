@@ -1,17 +1,7 @@
-import { JSX } from "./jsx";
+import { JSX, getCUIContext } from "./jsx";
 
-const App = (props: any) => {
-	const { id, className } = props;
+const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+const context = getCUIContext(canvas, 0.122, 0.122, 0.122);
+window.addEventListener("resize", context.resize);
 
-	if(id === "foo") {
-		return null;
-	}
-
-	return (<panel id="App" className={ className }></panel>);
-};
-
-JSX.render(
-	<panel id="panel1" margin={ 100 }>
-		<App className="FooBar" />
-	</panel>,
-	document.getElementById("canvas") as HTMLCanvasElement);
+// const App: any = () => { };
