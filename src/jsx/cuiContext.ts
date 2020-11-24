@@ -111,11 +111,14 @@ class CUIContextImpl implements CUIContext, IDisposable {
 
 	onRequestAnimationFrame = (_time: number) => {
 		this._animationFrameHandle = 0;
-
-		const style = window.getComputedStyle(this.canvas);
+		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
 		if(!this._root) {
 			return;
+		}
+
+		if (this._isAnimationRunning) {
+			this._animationFrameHandle = window.requestAnimationFrame(this.onRequestAnimationFrame);
 		}
 	}
 	//#endregion
@@ -127,11 +130,7 @@ class CUIContextImpl implements CUIContext, IDisposable {
 			return;
 		}
 
-		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-
-		if (this._isAnimationRunning) {
-			this._animationFrameHandle = window.requestAnimationFrame(this.onRequestAnimationFrame);
-		}
+		this._animationFrameHandle = window.requestAnimationFrame(this.onRequestAnimationFrame);
 	}
 	//#endregion
 

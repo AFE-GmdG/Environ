@@ -3,64 +3,38 @@ declare namespace JSX {
 	//#region Intrinsic Elements
 
 	interface IntrinsicElements {
-		panel: IntrinsicPanelElement;
-		button: IntrinsicButtonElement;
-	}
-
-	interface IntrinsicElement {
-		id?: string;
-	}
-
-	interface IntrinsicPanelElement extends IntrinsicElement {
-		margin?: string | number | Margin;
-	}
-
-	interface IntrinsicButtonElement extends IntrinsicPanelElement {
-		disabled?: boolean;
+		panel: PanelProps;
+		button: ButtonProps;
 	}
 
 	//#endregion
 
+	type Key = string | number;
+
+	interface ElementProps {
+		id?: Key;
+	}
+
+	interface PanelProps extends ElementProps {
+		margin?: string | number | TopRightBottomLeft;
+		padding?: string | number | TopRightBottomLeft;
+		width?: number;
+		height?: number;
+	}
+
+	interface ButtonProps extends PanelProps {
+		disabled?: boolean;
+	}
+
 	//#region Styling Attributes
 
-	interface Margin {
+	interface TopRightBottomLeft {
 		top: number;
 		right: number;
 		bottom: number;
 		left: number;
 	}
 
-	//#endregion
-
-	//#region Events
-	/*
-	interface JsxEvent<T = unknown, C = unknown> {
-		currentTarget: C;
-		target: T;
-		bubbles: boolean;
-		cancelable: boolean;
-		defaultPrevented: boolean;
-		preventDefault(): void;
-		stopPropagation(): void;
-		timestamp: number;
-		type: string;
-	}
-
-	interface SyntheticEvent<T, E> extends BaseSyntheticEvent<E, EventTarget & T> {}
-
-	type EventHandler<E extends SyntheticEvent<any>> = { bivarianceHack(event: E): void }["bivarianceHack"];
-
-	interface EventAttributes {
-	}
-
-	interface FocusEventAttributes<T> {
-		onFocus?: FocusEventHandler<T>;
-		onBlur?: FocusEventHandler<T>;
-	}
-
-	interface MouseEventAttributes {
-	}
-	*/
 	//#endregion
 
 }

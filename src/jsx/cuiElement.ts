@@ -1,5 +1,3 @@
-//#region CUIElement
-
 import { CUIContext } from "./cuiContext";
 
 /** The Canvas UI Element is the most general base class from which all objects in a Canvas UI Environment inherit. */
@@ -18,5 +16,3 @@ export abstract class CUIElement {
 	}
 
 };
-
-//#endregion

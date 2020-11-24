@@ -1,53 +1,44 @@
 /// <reference path="./jsx.d.ts" />
 
-import { Rect } from "./rect";
-import { Size } from "./size";
-import { render } from "./canvas";
+import { CUIElement } from "./cuiElement";
+import { CUIPanel } from "./cuiPanel";
+import { CUIButton } from "./cuiButton";
 
-type Key = string | number;
-type JsxElementConstructor<P> = ((props: P) => JsxElement | null);
+export type PossibleChild = CUIElement | string | null;
 
-export class JsxElement<P = any, T extends keyof JSX.IntrinsicElements | JsxElementConstructor<any> = keyof JSX.IntrinsicElements | JsxElementConstructor<any>> {
+export type PropsWithChildren<TProps extends {} = {}> =
+	TProps & {
+		children?: PossibleChild[];
+	};
 
-	public readonly type: T;
-	public props: P;
-	public key: Key | null;
+export type FC<TProps extends {} = {}> = ((props: PropsWithChildren<TProps>) => CUIElement | null);
 
-	private _minimumSize: Size;
+export type CUIElementFactory<TProps extends {} = {}> =	keyof JSX.IntrinsicElements	| FC<TProps>;
 
-	constructor(type: T, props: P, key?: Key | null) {
-		this.type = type;
-		this.props = props;
-		this.key = key === undefined ? null : key;
+function cui<TProps extends {} = {}>(factory: CUIElementFactory<TProps>, props: TProps, ...children: PossibleChild[]): CUIElement | null {
+	const propsWithChildren: PropsWithChildren<TProps> = {
+		...props,
+		children: children && children.length ? children : undefined
+	};
 
-		this._minimumSize = new Size(0, 0);
-	}
-
-	public measure(_availableSize: Size): void {
-	}
-
-	public arrange(_finalRect: Rect): void {
-	}
-}
-
-type JsxElementFactory =
-	keyof JSX.IntrinsicElements |
-	((props?: JSX.IntrinsicElement) => JsxElement);
-
-
-function createElement(factory: JsxElementFactory, props: JSX.IntrinsicElement, ...children: JsxElementFactory[]): JsxElement | null {
 	if (typeof factory === "function") {
-		return factory(props);
+		return factory(propsWithChildren);
 	}
 
-	for (const child of children) {
-		console.log(child);
-	}
+	// for (const child of children) {
+	// 	console.log(child);
+	// }
 
-	return new JsxElement(factory, props);
+	switch (factory) {
+		case "panel":
+			return new CUIPanel(propsWithChildren);
+		case "button":
+			return new CUIButton(propsWithChildren);
+		default:
+			throw new Error("Unknown intrinsic element.");
+	}
 }
 
 export const JSX = {
-	createElement,
-	render
+	cui
 };

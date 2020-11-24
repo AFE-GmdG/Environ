@@ -1,9 +1,4 @@
-import { JsxElement } from "./jsx";
-
-export function render(element: JsxElement, canvas: HTMLCanvasElement) {
-	if (!element || !(element instanceof JsxElement)) {
-		throw new Error("No JsxElement found.");
-	}
+export function render(canvas: HTMLCanvasElement) {
 	if (!canvas || !(canvas instanceof HTMLCanvasElement)) {
 		throw new Error("No Canvas found.");
 	}
