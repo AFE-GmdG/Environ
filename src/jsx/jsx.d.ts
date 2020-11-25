@@ -28,6 +28,18 @@ declare namespace JSX {
 
 	//#region Styling Attributes
 
+	interface RGB {
+		r: number;
+		g: number;
+		b: number;
+	}
+
+	interface HSL {
+		h: number;
+		s: number;
+		l: number;
+	}
+
 	interface TopRightBottomLeft {
 		top: number;
 		right: number;

@@ -21,5 +21,3 @@ context.render(
 		<button disabled={ true }>This is a Button.</button>
 	</App>
 );
-
-var a: JSX.IntrinsicElements;

@@ -5,9 +5,9 @@ const knownCanvases = new Map<HTMLCanvasElement, CUIContextImpl>();
 const canvasObserver = new MutationObserver(mutations => {
 	for (const mutation of mutations) {
 		mutation.addedNodes.forEach(node => {
-			if(node instanceof HTMLCanvasElement) {
+			if (node instanceof HTMLCanvasElement) {
 				const context = knownCanvases.get(node);
-				if(context) {
+				if (context) {
 					// add EventListener for Mouse, etc...
 					registerEventHandler(node, context);
 					context.requestAnimationFrame(true);
@@ -15,9 +15,9 @@ const canvasObserver = new MutationObserver(mutations => {
 			}
 		});
 		mutation.removedNodes.forEach(node => {
-			if(node instanceof HTMLCanvasElement) {
+			if (node instanceof HTMLCanvasElement) {
 				const context = knownCanvases.get(node);
-				if(context) {
+				if (context) {
 					// remove EventListener for Mouse, etc...
 				}
 			}
@@ -40,6 +40,7 @@ export interface CUIContext extends IDisposable {
 
 	readonly root: CUIElement | null;
 
+	removeChild(child: CUIElement): CUIElement;
 	render(root: CUIElement | null): void;
 	resize(): void;
 	updateClearColor(clearColorRed: number, clearColorGreen: number, clearColorBlue: number): void;
@@ -54,6 +55,7 @@ class CUIContextImpl implements CUIContext, IDisposable {
 	private _isDirty: boolean;
 	private _isAnimationRunning: boolean;
 	private _animationFrameHandle: number;
+	private _rendering: boolean;
 
 	private _root: CUIElement | null;
 	get root(): CUIElement | null {
@@ -89,10 +91,11 @@ class CUIContextImpl implements CUIContext, IDisposable {
 		this._isDirty = true;
 		this._isAnimationRunning = false;
 		this._animationFrameHandle = 0;
+		this._rendering = false;
 		this._root = null;
 
 		knownCanvases.set(canvas, this);
-		if(canvas.isConnected) {
+		if (canvas.isConnected) {
 			registerEventHandler(canvas, this);
 			this.requestAnimationFrame();
 		}
@@ -113,8 +116,13 @@ class CUIContextImpl implements CUIContext, IDisposable {
 		this._animationFrameHandle = 0;
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-		if(!this._root) {
+		if (!this._root) {
 			return;
+		}
+
+		if (this._isDirty) {
+			const { width, height } = this.canvas.getBoundingClientRect();
+			// this._root.context
 		}
 
 		if (this._isAnimationRunning) {
@@ -126,7 +134,7 @@ class CUIContextImpl implements CUIContext, IDisposable {
 	//#region Private CUIContext API (only available from within this file)
 	requestAnimationFrame = (isDirty: boolean = false) => {
 		this._isDirty ||= isDirty;
-		if(this._animationFrameHandle !== 0) {
+		if (this._animationFrameHandle !== 0) {
 			return;
 		}
 
@@ -135,17 +143,42 @@ class CUIContextImpl implements CUIContext, IDisposable {
 	//#endregion
 
 	//#region Public CUIContext API
-	render = (root: CUIElement | null) => {
-		if (this._root && this._root !== root) {
-			// Destroy old _root
-			// [...]
+	removeChild = (child: CUIElement): CUIElement => {
+		if(this._root === child) {
+			const rendering = this._rendering;
+			this._rendering = true;
+			child.context = null;
 			this._root = null;
-			this.requestAnimationFrame(true);
+			this._rendering = rendering;
+			return child;
 		}
+		throw new Error("Invalid operation: The cild isn't the root element.");
+	}
 
-		if (root) {
-			this._root = root;
-			this.requestAnimationFrame(true);
+	render = (root: CUIElement | null) => {
+		if (this._rendering) {
+			return;
+		}
+		this._rendering = true;
+		try {
+			if (this._root && this._root !== root) {
+				// Destroy old _root
+				this._root.context = null;
+				this._root.dispose();
+				this._root = null;
+				this.requestAnimationFrame(true);
+			}
+
+			if (root) {
+				if (root.context && root.context !== this) {
+					throw new Error("Invalid operation: The root component belongs to another cui context.");
+				}
+				root.context = this;
+				this._root = root;
+				this.requestAnimationFrame(true);
+			}
+		} finally {
+			this._rendering = false;
 		}
 	}
 
@@ -177,11 +210,15 @@ export function getCUIContext(canvas: HTMLCanvasElement, clearColorRed?: number,
 	}
 
 	const context = knownCanvases.get(canvas);
-	if(context) {
-		if(clearColorRed !== undefined && clearColorGreen !== undefined && clearColorBlue !== undefined) {
+	if (context) {
+		if (clearColorRed !== undefined && clearColorGreen !== undefined && clearColorBlue !== undefined) {
 			context.updateClearColor(clearColorRed, clearColorGreen, clearColorBlue);
 		}
 		return context;
 	}
 	return new CUIContextImpl(canvas, clearColorRed, clearColorGreen, clearColorBlue);
+}
+
+export function isCUIContext(maybeContext: any): maybeContext is CUIContext {
+	return maybeContext instanceof CUIContextImpl;
 }
