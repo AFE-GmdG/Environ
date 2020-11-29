@@ -3,6 +3,7 @@
 import { CUIElement } from "./cuiElement";
 import { CUIPanel } from "./cuiPanel";
 import { CUIButton } from "./cuiButton";
+import { BasicStateAction, Dispatch, resolveDispatcher } from "./dispatcher";
 
 export type PossibleChild = CUIElement | string | null;
 
@@ -13,7 +14,7 @@ export type PropsWithChildren<TProps extends {} = {}> =
 
 export type FC<TProps extends {} = {}> = ((props: PropsWithChildren<TProps>) => CUIElement | null);
 
-export type CUIElementFactory<TProps extends {} = {}> =	keyof JSX.IntrinsicElements	| FC<TProps>;
+export type CUIElementFactory<TProps extends {} = {}> = keyof JSX.IntrinsicElements | FC<TProps>;
 
 function cui<TProps extends {} = {}>(factory: CUIElementFactory<TProps>, props: TProps, ...children: PossibleChild[]): CUIElement | null {
 	const propsWithChildren: PropsWithChildren<TProps> = {
@@ -39,6 +40,12 @@ function cui<TProps extends {} = {}>(factory: CUIElementFactory<TProps>, props: 
 	}
 }
 
+function useState<S>(initialState: (() => S) | S): [S, Dispatch<BasicStateAction<S>>] {
+	return resolveDispatcher()
+		.useState(initialState);
+}
+
 export const JSX = {
-	cui
+	cui,
+	useState
 };

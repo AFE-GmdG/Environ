@@ -24,6 +24,7 @@ declare namespace JSX {
 
 	interface ButtonProps extends PanelProps {
 		disabled?: boolean;
+		onClick?: (e: any) => void;
 	}
 
 	//#region Styling Attributes
