@@ -1,9 +1,9 @@
 export class Size {
 
-	public readonly width: number;
-	public readonly height: number;
+	readonly width: number;
+	readonly height: number;
 
-	public get isEmpty(): boolean {
+	get isEmpty(): boolean {
 		return this.width === 0 && this.height === 0;
 	}
 

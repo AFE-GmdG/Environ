@@ -1,7 +1,19 @@
+export type RGB = {
+	r: number;
+	g: number;
+	b: number;
+};
+
+export type HSL = {
+	h: number;
+	s: number;
+	l: number;
+};
+
 export class Color {
 
-	private _rgb: JSX.RGB;
-	private _hsl: JSX.HSL;
+	private _rgb: RGB;
+	private _hsl: HSL;
 	private _mode: "RGB" | "HSL";
 
 	get r(): number {
@@ -39,9 +51,9 @@ export class Color {
 		}
 	}
 
-	constructor(rgb: JSX.RGB);
-	constructor(hsl: JSX.HSL);
-	constructor(rgbOrHsl: JSX.RGB | JSX.HSL) {
+	constructor(rgb: RGB);
+	constructor(hsl: HSL);
+	constructor(rgbOrHsl: RGB | HSL) {
 		if (isRGB(rgbOrHsl)) {
 			this._mode = "RGB";
 			this._rgb = {
@@ -61,7 +73,7 @@ export class Color {
 		}
 	}
 
-	static toHSL(rgb: JSX.RGB): JSX.HSL {
+	static toHSL(rgb: RGB): HSL {
 		const r = Math.max(0, Math.min(255, Math.floor(rgb.r))) / 255;
 		const g = Math.max(0, Math.min(255, Math.floor(rgb.g))) / 255;
 		const b = Math.max(0, Math.min(255, Math.floor(rgb.b))) / 255;
@@ -96,7 +108,7 @@ export class Color {
 		}
 	}
 
-	static toRGB(_hsl: JSX.HSL): JSX.RGB {
+	static toRGB(_hsl: HSL): RGB {
 		const s = Math.max(0, Math.min(1, _hsl.s / 100));
 		const l = Math.max(0, Math.min(1, _hsl.l / 100));
 
@@ -129,6 +141,10 @@ function hue2rgb(p: number, q: number, t: number): number {
 	return p;
 }
 
-function isRGB(rgbOrHsl: JSX.RGB | JSX.HSL): rgbOrHsl is JSX.RGB {
+export function isRGB(rgbOrHsl: RGB | HSL): rgbOrHsl is RGB {
 	return "r" in rgbOrHsl;
+}
+
+export function isHSL(rgbOrHsl: RGB | HSL): rgbOrHsl is HSL {
+	return "h" in rgbOrHsl;
 }

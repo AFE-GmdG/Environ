@@ -3,58 +3,58 @@ import { Point } from "./point";
 
 export class Rect {
 
-	public readonly x: number;
-	public readonly y: number;
-	public readonly width: number;
-	public readonly height: number;
+	readonly x: number;
+	readonly y: number;
+	readonly width: number;
+	readonly height: number;
 
-	public get isEmpty(): boolean {
+	get isEmpty(): boolean {
 		return this.x === 0 && this.y === 0 && this.width === 0 && this.height === 0;
 	}
 
-	public get left(): number {
+	get left(): number {
 		return this.x;
 	}
 
-	public get top(): number {
+	get top(): number {
 		return this.y;
 	}
 
-	public get right(): number {
+	get right(): number {
 		return isFinite(this.width) ? this.x + this.width : Infinity;
 	}
 
-	public get bottom(): number {
+	get bottom(): number {
 		return isFinite(this.height) ? this.y + this.height : Infinity;
 	}
 
-	public get location(): Point {
+	get location(): Point {
 		return new Point(this.x, this.y);
 	}
 
-	public get size(): Size {
+	get size(): Size {
 		return new Size(this.width, this.height);
 	}
 
-	public get topLeft(): Point {
+	get topLeft(): Point {
 		return new Point(this.x, this.y);
 	}
 
-	public get topRight(): Point {
+	get topRight(): Point {
 		if (!isFinite(this.width)) {
 			throw new Error("The rect has an infinite width.");
 		}
 		return new Point(this.x + this.width, this.y);
 	}
 
-	public get bottomLeft(): Point {
+	get bottomLeft(): Point {
 		if (!isFinite(this.height)) {
 			throw new Error("The rect has an infinite height.");
 		}
 		return new Point(this.x, this.y + this.height);
 	}
 
-	public get bottomRight(): Point {
+	get bottomRight(): Point {
 		if (!isFinite(this.width) || !isFinite(this.height)) {
 			throw new Error("The recht has an infinite size.");
 		}
@@ -101,14 +101,14 @@ export class Rect {
 		}
 	}
 
-	public contains(p: Point): boolean;
-	public contains(r: Rect): boolean;
-	public contains(x: number, y: number): boolean;
-	public contains(_x: Point | Rect | number, _y?: number): boolean {
+	contains(p: Point): boolean;
+	contains(r: Rect): boolean;
+	contains(x: number, y: number): boolean;
+	contains(_x: Point | Rect | number, _y?: number): boolean {
 		throw new Error("Not implemented.");
 	}
 
-	public intersectsWith(_r: Rect): boolean {
+	intersectsWith(_r: Rect): boolean {
 		throw new Error("Not implemented.");
 	}
 

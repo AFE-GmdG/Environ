@@ -1,5 +1,4 @@
-import { CUIElement } from "./cuiElement";
-import { IDisposable } from "./disposable";
+import { IDisposable } from "../disposable";
 
 const knownCanvases = new Map<HTMLCanvasElement, CUIContextImpl>();
 const canvasObserver = new MutationObserver(mutations => {
@@ -38,10 +37,10 @@ export interface CUIContext extends IDisposable {
 	readonly canvas: HTMLCanvasElement;
 	readonly gl: WebGL2RenderingContext;
 
-	readonly root: CUIElement | null;
+	// readonly root: CUIElement | null;
 
-	removeChild(child: CUIElement): CUIElement;
-	render(root: CUIElement | null): void;
+	// removeChild(child: CUIElement): CUIElement;
+	render(root: any | null): void;
 	resize(): void;
 	updateClearColor(clearColorRed: number, clearColorGreen: number, clearColorBlue: number): void;
 }
@@ -57,10 +56,10 @@ class CUIContextImpl implements CUIContext, IDisposable {
 	private _animationFrameHandle: number;
 	private _rendering: boolean;
 
-	private _root: CUIElement | null;
-	get root(): CUIElement | null {
-		return this._root;
-	}
+	// private _root: CUIElement | null;
+	// get root(): CUIElement | null {
+	// 	return this._root;
+	// }
 	//#endregion
 
 	//#region ctor/dispose
@@ -92,7 +91,7 @@ class CUIContextImpl implements CUIContext, IDisposable {
 		this._isAnimationRunning = false;
 		this._animationFrameHandle = 0;
 		this._rendering = false;
-		this._root = null;
+		//this._root = null;
 
 		knownCanvases.set(canvas, this);
 		if (canvas.isConnected) {
@@ -116,9 +115,9 @@ class CUIContextImpl implements CUIContext, IDisposable {
 		this._animationFrameHandle = 0;
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-		if (!this._root) {
-			return;
-		}
+		// if (!this._root) {
+		// 	return;
+		// }
 
 		if (this._isDirty) {
 			const { width, height } = this.canvas.getBoundingClientRect();
@@ -143,38 +142,38 @@ class CUIContextImpl implements CUIContext, IDisposable {
 	//#endregion
 
 	//#region Public CUIContext API
-	removeChild = (child: CUIElement): CUIElement => {
-		if(this._root === child) {
-			const rendering = this._rendering;
-			this._rendering = true;
-			child.context = null;
-			this._root = null;
-			this._rendering = rendering;
-			return child;
-		}
-		throw new Error("Invalid operation: The cild isn't the root element.");
-	}
+	// removeChild = (child: CUIElement): CUIElement => {
+	// 	if(this._root === child) {
+	// 		const rendering = this._rendering;
+	// 		this._rendering = true;
+	// 		child.context = null;
+	// 		this._root = null;
+	// 		this._rendering = rendering;
+	// 		return child;
+	// 	}
+	// 	throw new Error("Invalid operation: The cild isn't the root element.");
+	// }
 
-	render = (root: CUIElement | null) => {
+	render = (root: any | null) => {
 		if (this._rendering) {
 			return;
 		}
 		this._rendering = true;
 		try {
-			if (this._root && this._root !== root) {
-				// Destroy old _root
-				this._root.context = null;
-				this._root.dispose();
-				this._root = null;
-				this.requestAnimationFrame(true);
-			}
+			// if (this._root && this._root !== root) {
+			// 	// Destroy old _root
+			// 	this._root.context = null;
+			// 	this._root.dispose();
+			// 	this._root = null;
+			// 	this.requestAnimationFrame(true);
+			// }
 
 			if (root) {
 				if (root.context && root.context !== this) {
 					throw new Error("Invalid operation: The root component belongs to another cui context.");
 				}
 				root.context = this;
-				this._root = root;
+				// this._root = root;
 				this.requestAnimationFrame(true);
 			}
 		} finally {

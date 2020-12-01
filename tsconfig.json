@@ -30,7 +30,7 @@
     "experimentalDecorators": true,           /* Enables experimental support for ES7 decorators. */
     "removeComments": true,                   /* Do not emit comments to output. */
     "jsx": "react",                           /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
-    "jsxFactory": "JSX.cui",
+    // "jsxFactory": "JSX.cui",
     "skipLibCheck": true,                     /* Skip type checking of declaration files. */
     "lib": [                                  /* Specify library files to be included in the compilation. */
       "dom",
