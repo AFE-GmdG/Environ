@@ -1,4 +1,7 @@
+import * as React from "react";
 import { IDisposable } from "../disposable";
+
+const DEFAULT_ROOT_ID = "<default>";
 
 const knownCanvases = new Map<HTMLCanvasElement, CUIContextImpl>();
 const canvasObserver = new MutationObserver(mutations => {
@@ -33,6 +36,17 @@ function unregisterEventHandler(canvas: HTMLCanvasElement, context: CUIContextIm
 	canvas.removeEventListener("mousemove", context.onMouseMove)
 }
 
+const LegacyRoot = 0;
+const BlockingRoot = 1;
+const ConcurrentRoot = 2;
+type RootTag = typeof LegacyRoot | typeof BlockingRoot | typeof ConcurrentRoot;
+
+type Container = {
+	rootId: string;
+	pendingChildren: any[];
+	children: [];
+}
+
 export interface CUIContext extends IDisposable {
 	readonly canvas: HTMLCanvasElement;
 	readonly gl: WebGL2RenderingContext;
@@ -54,7 +68,8 @@ class CUIContextImpl implements CUIContext, IDisposable {
 	private _isDirty: boolean;
 	private _isAnimationRunning: boolean;
 	private _animationFrameHandle: number;
-	private _rendering: boolean;
+
+	private _rootContainer: Container | null;
 
 	// private _root: CUIElement | null;
 	// get root(): CUIElement | null {
@@ -90,7 +105,9 @@ class CUIContextImpl implements CUIContext, IDisposable {
 		this._isDirty = true;
 		this._isAnimationRunning = false;
 		this._animationFrameHandle = 0;
-		this._rendering = false;
+
+		this._rootContainer = null;
+
 		//this._root = null;
 
 		knownCanvases.set(canvas, this);
@@ -139,46 +156,19 @@ class CUIContextImpl implements CUIContext, IDisposable {
 
 		this._animationFrameHandle = window.requestAnimationFrame(this.onRequestAnimationFrame);
 	}
+
+	private getOrCreateRootContainer = (rootId: string, tag: RootTag) => {
+		if (!this._rootContainer) {
+			this._rootContainer = { rootId, pendingChildren: [], children: [] };
+			this.createContainer(this._rootContainer, tag, false, null);
+		}
+		return this._rootContainer;
+	}
 	//#endregion
 
 	//#region Public CUIContext API
-	// removeChild = (child: CUIElement): CUIElement => {
-	// 	if(this._root === child) {
-	// 		const rendering = this._rendering;
-	// 		this._rendering = true;
-	// 		child.context = null;
-	// 		this._root = null;
-	// 		this._rendering = rendering;
-	// 		return child;
-	// 	}
-	// 	throw new Error("Invalid operation: The cild isn't the root element.");
-	// }
-
-	render = (root: any | null) => {
-		if (this._rendering) {
-			return;
-		}
-		this._rendering = true;
-		try {
-			// if (this._root && this._root !== root) {
-			// 	// Destroy old _root
-			// 	this._root.context = null;
-			// 	this._root.dispose();
-			// 	this._root = null;
-			// 	this.requestAnimationFrame(true);
-			// }
-
-			if (root) {
-				if (root.context && root.context !== this) {
-					throw new Error("Invalid operation: The root component belongs to another cui context.");
-				}
-				root.context = this;
-				// this._root = root;
-				this.requestAnimationFrame(true);
-			}
-		} finally {
-			this._rendering = false;
-		}
+	render = (root: JSX.CUIElement | null) => {
+		const container = this.getOrCreateRootContainer(DEFAULT_ROOT_ID, ConcurrentRoot);
 	}
 
 	resize = () => {
