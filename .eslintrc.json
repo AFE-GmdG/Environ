@@ -25,6 +25,7 @@
     "@typescript-eslint/quotes": ["error", "double"],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [ "error", { "argsIgnorePattern": "^_",  "varsIgnorePattern": "^_", "caughtErrorsIgnorePattern": "^_" } ],
-    "no-underscore-dangle": ["error", { "allowAfterThis": true }]
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+    "@typescript-eslint/naming-convention": ["error", {"format": ["camelCase", "PascalCase", "UPPER_CASE"], "leadingUnderscore": "allow", "selector": "default"}]
   }
 }
