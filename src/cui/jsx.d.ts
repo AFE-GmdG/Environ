@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 declare namespace JSX {
-	interface IntrinsicElements {
-		cuiPanel: any;
-		cuiButton: any;
-	}
+  interface IntrinsicElements {
+    cuiPanel: any;
+    cuiButton: any;
+  }
 
-	interface CUIElement extends Element { }
-	interface CUIPanelElement extends CUIElement { }
-	interface CUIButtonElement extends CUIElement { }
+  interface CUIElement extends Element { }
+  interface CUIPanelElement extends CUIElement { }
+  interface CUIButtonElement extends CUIElement { }
 
-	type CUIFactory<P> = (props?: React.Attributes & P | null, ...children: React.ReactNode[]) => CUIElement<P>;
+  type CUIFactory<P> = (props?: React.Attributes & P | null, ...children: React.ReactNode[]) => CUIElement<P>;
 
 }

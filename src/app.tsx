@@ -8,16 +8,16 @@ window.addEventListener("resize", context.resize);
 type AppProps = {
 };
 
-const App: React.FC<AppProps> = _props => {
-	//const { children } = props;
-	const [isEnabled, setIsEnabled] = React.useState(true);
+const App: React.FC<AppProps> = (_props) => {
+  // const { children } = props;
+  const [isEnabled, setIsEnabled] = React.useState(true);
 
-	return (
-		<cuiPanel>
-			<cuiButton disabled={ isEnabled }>This is a cuiButton</cuiButton>
-			<cuiButton onClick={() => setIsEnabled(!isEnabled) }>Enable/Disable other cuiButton</cuiButton>
-		</cuiPanel>
-	);
+  return (
+    <cuiPanel>
+      <cuiButton disabled={isEnabled}>This is a cuiButton</cuiButton>
+      <cuiButton onClick={() => setIsEnabled(!isEnabled)}>Enable/Disable other cuiButton</cuiButton>
+    </cuiPanel>
+  );
 };
 
 context.render(<App />);
