@@ -8,22 +8,37 @@
 
 html {
 	height: 100vh;
-	background-color: #1f1f1f;
+	background-color: #000000;
 	color: #ededed;
 	user-select: none;
 	-moz-user-select: none;
 }
 
 body {
+	display: flex;
+	flex-direction: row;
+	width: 100vw;
 	height: 100vh;
+	overflow: hidden;
+	margin: 0;
 	font-family: "Hind";
 	font-size: 14px;
 	font-weight: normal;
-	margin: 0;
 }
 
 #canvas {
-	width: 100vw;
-	height: 100vh;
+	flex: 1 1 0px;
+	margin: 24px 12px 24px 24px;
+	background-color: #1f1f1f;
+	box-shadow: 0 0 12px 3px #4f4f4f;
+	min-width: 0;
+	min-height: 0;
 	image-rendering: pixelated;
+}
+
+#app {
+	flex: 1 1 0px;
+	margin: 24px 24px 24px 12px;
+	background-color: #1f1f1f;
+	box-shadow: 0 0 12px 3px #4f4f4f;
 }
