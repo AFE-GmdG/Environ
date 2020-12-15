@@ -3,6 +3,8 @@ declare namespace JSX {
   interface IntrinsicElements {
     cuiPanel: any;
     cuiButton: any;
+    // cuiPanel: CUIPanelElement;
+    // cuiButton: CUIButtonElement;
   }
 
   interface CUIElement extends Element { }

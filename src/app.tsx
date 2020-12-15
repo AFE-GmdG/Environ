@@ -3,6 +3,8 @@ import * as ReactDOM from "react-dom";
 import { debounce } from "./common";
 import { getCUIContext } from "./cui";
 
+const kagami = require("./assets/kagami.png").default;
+
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const div = document.getElementById("app") as HTMLDivElement;
 const context = getCUIContext(canvas, 0.122, 0.122, 0.122);
@@ -12,9 +14,8 @@ type AppProps = {
 };
 
 const CuiApp: React.FC<AppProps> = (_props) => {
-  // const { children } = props;
   const [isEnabled, setIsEnabled] = React.useState(true);
-
+  debugger;
   return (
     <cuiPanel>
       <cuiButton disabled={!isEnabled}>This is a cui button.</cuiButton>
@@ -23,16 +24,17 @@ const CuiApp: React.FC<AppProps> = (_props) => {
   );
 };
 
-const ReactApp: React.FC<AppProps> = (_props) => {
-  const [isEnabled, setIsEnabled] = React.useState(true);
+// const ReactApp: React.FC<AppProps> = (_props) => {
+//   const [isEnabled, setIsEnabled] = React.useState(true);
+//   debugger;
+//   return (
+//     <div>
+//       <button type="button" disabled={!isEnabled}>This is a html button.</button>
+//       <button type="button" onClick={() => setIsEnabled(!isEnabled)}>Enable/Disable other html button.</button>
+//     </div>
+//   );
+// };
 
-  return (
-    <div>
-      <button type="button" disabled={!isEnabled}>This is a html button.</button>
-      <button type="button" onClick={() => setIsEnabled(!isEnabled)}>Enable/Disable other html button.</button>
-    </div>
-  );
-};
-
+ReactDOM.render(<img alt="Single Rendered Tag" src={kagami} style={{ width: "100%" }} />, div);
+context.render(<cuiPanel />);
 context.render(<CuiApp />);
-ReactDOM.render(<ReactApp />, div);

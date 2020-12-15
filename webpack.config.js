@@ -51,7 +51,16 @@ const config = {
 				loader: "../lib/string-loader"
 			}]
     }, {
-      test: /favicon.ico$/,
+      test: /\.(png|jpe?g|gif)$/,
+      exclude: /node_modules/,
+      use: [{
+				loader: "file-loader",
+				options: {
+					name: "[path][name].[ext]"
+				}
+			}]
+    }, {
+      test: /favicon\.ico$/,
       exclude: /node_modules/,
       use: [{
         loader: "file-loader",
@@ -66,7 +75,10 @@ const config = {
 		new CopyWebpackPlugin({
 			patterns: [{
 				from: path.resolve(cwd, "src/assets"),
-				to: path.resolve(cwd, "dist/assets")
+				to: path.resolve(cwd, "dist/assets"),
+				globOptions: {
+					ignore: ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif"]
+				}
 			}]
 		}),
 		new HtmlWebpackPlugin({

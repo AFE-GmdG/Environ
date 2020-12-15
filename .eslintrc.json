@@ -19,6 +19,8 @@
     }
   },
   "rules": {
+    "no-console": "off",
+    "no-debugger": "off",
     "max-len": [2, 160, 2, {"ignoreUrls": true}],
     "import/prefer-default-export": "off",
     "quotes": ["error", "double"],

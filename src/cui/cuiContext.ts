@@ -8,8 +8,6 @@ function unregisterEventHandler(canvas: HTMLCanvasElement, context: CUIContextIm
   canvas.removeEventListener("mousemove", context.onMouseMove);
 }
 
-const DEFAULT_ROOT_ID = "<default>";
-
 const knownCanvases = new Map<HTMLCanvasElement, CUIContextImpl>();
 const canvasObserver = new MutationObserver((mutations) => {
   mutations.forEach((mutation) => {
@@ -36,11 +34,6 @@ const canvasObserver = new MutationObserver((mutations) => {
 });
 canvasObserver.observe(document.body, { childList: true, subtree: true });
 
-const LegacyRoot = 0;
-const BlockingRoot = 1;
-const ConcurrentRoot = 2;
-type RootTag = typeof LegacyRoot | typeof BlockingRoot | typeof ConcurrentRoot;
-
 type Container = {
   rootId: string;
   pendingChildren: any[];
@@ -51,10 +44,9 @@ export interface CUIContext extends IDisposable {
   readonly canvas: HTMLCanvasElement;
   readonly gl: WebGL2RenderingContext;
 
-  // readonly root: CUIElement | null;
-
   // removeChild(child: CUIElement): CUIElement;
-  render(root: any | null): void;
+  render(root: React.ReactElement): void;
+  render(root: React.FunctionComponentElement<any>): void;
   resize(): void;
   updateClearColor(clearColorRed: number, clearColorGreen: number, clearColorBlue: number): void;
 }
@@ -72,11 +64,6 @@ class CUIContextImpl implements CUIContext, IDisposable {
   private _animationFrameHandle: number;
 
   private _rootContainer: Container | null;
-
-  // private _root: CUIElement | null;
-  // get root(): CUIElement | null {
-  //   return this._root;
-  // }
   // #endregion
 
   // #region ctor/dispose
@@ -160,20 +147,11 @@ class CUIContextImpl implements CUIContext, IDisposable {
 
     this._animationFrameHandle = window.requestAnimationFrame(this.onRequestAnimationFrame);
   };
-
-  private getOrCreateRootContainer = (rootId: string, _tag: RootTag) => {
-    if (!this._rootContainer) {
-      this._rootContainer = { rootId, pendingChildren: [], children: [] };
-      // this.createContainer(this._rootContainer, tag, false, null);
-    }
-    return this._rootContainer;
-  };
   // #endregion
 
   // #region Public CUIContext API
-  render = (_root: JSX.CUIElement | null) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const container = this.getOrCreateRootContainer(DEFAULT_ROOT_ID, ConcurrentRoot);
+  render = (_root: React.FunctionComponentElement<any>) => {
+    console.log(_root?.key);
   };
 
   resize = () => {
