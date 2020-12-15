@@ -36,5 +36,5 @@ const CuiApp: React.FC<AppProps> = (_props) => {
 // };
 
 ReactDOM.render(<img alt="Single Rendered Tag" src={kagami} style={{ width: "100%" }} />, div);
-context.render(<cuiPanel />);
+// context.render(<cuiPanel onClick={(e: any) => console.log({ onClick: e })} />);
 context.render(<CuiApp />);

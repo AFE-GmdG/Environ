@@ -3,8 +3,16 @@ export class Size {
 
   readonly height: number;
 
+  static readonly empty: Size = new Size();
+
+  static readonly infinite: Size = new Size(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+
   get isEmpty(): boolean {
     return this.width === 0 && this.height === 0;
+  }
+
+  get isFinite(): boolean {
+    return Number.isFinite(this.width) && Number.isFinite(this.height);
   }
 
   constructor();

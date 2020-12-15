@@ -1,4 +1,7 @@
 import { IDisposable } from "../disposable";
+import { CUIContainer } from "./cuiContainer";
+import { Margin } from "./margin";
+import { Size } from "./size";
 
 function registerEventHandler(canvas: HTMLCanvasElement, context: CUIContextImpl) {
   canvas.addEventListener("mousemove", context.onMouseMove);
@@ -34,15 +37,11 @@ const canvasObserver = new MutationObserver((mutations) => {
 });
 canvasObserver.observe(document.body, { childList: true, subtree: true });
 
-type Container = {
-  rootId: string;
-  pendingChildren: any[];
-  children: [];
-};
-
 export interface CUIContext extends IDisposable {
   readonly canvas: HTMLCanvasElement;
   readonly gl: WebGL2RenderingContext;
+  padding: Margin;
+  readonly size: Size;
 
   // removeChild(child: CUIElement): CUIElement;
   render(root: React.ReactElement): void;
@@ -63,7 +62,24 @@ class CUIContextImpl implements CUIContext, IDisposable {
 
   private _animationFrameHandle: number;
 
-  private _rootContainer: Container | null;
+  private _rootContainer: CUIContainer | null;
+
+  private _padding: Margin;
+  // #endregion
+
+  // #region Properties
+  get padding(): Margin {
+    return this._padding;
+  }
+
+  set padding(value: Margin) {
+    this._padding = value;
+    this.requestAnimationFrame(true);
+  }
+
+  get size(): Size {
+    return new Size(this.canvas.width, this.canvas.height);
+  }
   // #endregion
 
   // #region ctor/dispose
@@ -98,6 +114,8 @@ class CUIContextImpl implements CUIContext, IDisposable {
 
     this._rootContainer = null;
 
+    this._padding = new Margin();
+
     // this._root = null;
 
     knownCanvases.set(canvas, this);
@@ -122,14 +140,17 @@ class CUIContextImpl implements CUIContext, IDisposable {
     this._animationFrameHandle = 0;
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-    // if (!this._root) {
-    //   return;
-    // }
+    if (!this._rootContainer) {
+      return;
+    }
 
     if (this._isDirty) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { width, height } = this.canvas.getBoundingClientRect();
-      // this._root.context
+      const availableSize = new Size(width, height);
+      const necessarySize = this._rootContainer.measure(availableSize);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const finalSize = this._rootContainer.arrange(necessarySize);
     }
 
     if (this._isAnimationRunning) {
@@ -150,8 +171,15 @@ class CUIContextImpl implements CUIContext, IDisposable {
   // #endregion
 
   // #region Public CUIContext API
-  render = (_root: React.FunctionComponentElement<any>) => {
-    console.log(_root?.key);
+  render = (root: React.ReactElement | React.FunctionComponentElement<any>) => {
+    debugger;
+    if (this._rootContainer) {
+      debugger;
+    } else {
+      this._rootContainer = new CUIContainer(this, root);
+    }
+
+    this.requestAnimationFrame(true);
   };
 
   resize = () => {
