@@ -12,6 +12,7 @@
 
 	"settings": {
 		"files.exclude": {
+			".vscode": true,
 			"node_modules": true,
 			"bin": true,
 			"dist": true,
