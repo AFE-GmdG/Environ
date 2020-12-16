@@ -1,0 +1,37 @@
+@font-face {
+	font-family: "Hind";
+	font-style: normal;
+	font-weight: 400;
+	font-display: block;
+	src: url("/assets/hind-regular.ttf");
+}
+
+html {
+	height: 100vh;
+	background-color: #000000;
+	color: #ededed;
+	user-select: none;
+	-moz-user-select: none;
+}
+
+body {
+	display: flex;
+	flex-direction: row;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	margin: 0;
+	font-family: "Hind";
+	font-size: 14px;
+	font-weight: normal;
+}
+
+#canvas {
+	flex: 1 1 0px;
+	margin: 24px;
+	background-color: #1f1f1f;
+	box-shadow: 0 0 12px 3px #4f4f4f;
+	min-width: 0;
+	min-height: 0;
+	image-rendering: pixelated;
+}

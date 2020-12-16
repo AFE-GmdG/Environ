@@ -5,6 +5,10 @@
 			"path": "./Environ"
 		},
 		{
+			"name": "WebGL2 Tests",
+			"path": "./WebGL2"
+		},
+		{
 			"name": "WPF Example App",
 			"path": "./WpfExampleApp"
 		}
@@ -33,7 +37,7 @@
 		"typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
 		"typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
 		"typescript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": false,
-		"typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
+		"typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": false,
 		"typescript.format.placeOpenBraceOnNewLineForFunctions": false,
 		"typescript.format.placeOpenBraceOnNewLineForControlBlocks": false,
 
@@ -45,7 +49,7 @@
 		"javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
 		"javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
 		"javascript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": false,
-		"javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
+		"javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": false,
 		"javascript.format.placeOpenBraceOnNewLineForFunctions": false,
 		"javascript.format.placeOpenBraceOnNewLineForControlBlocks": false,
 	},
