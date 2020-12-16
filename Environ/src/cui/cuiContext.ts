@@ -1,7 +1,7 @@
 import { IDisposable } from "../disposable";
 import { CUIContainer } from "./cuiContainer";
-import { Margin } from "./margin";
-import { Size } from "./size";
+import { Margin } from "./primitives/margin";
+import { Size } from "./primitives/size";
 
 function registerEventHandler(canvas: HTMLCanvasElement, context: CUIContextImpl) {
   canvas.addEventListener("mousemove", context.onMouseMove);
@@ -116,8 +116,6 @@ class CUIContextImpl implements CUIContext, IDisposable {
 
     this._padding = new Margin();
 
-    // this._root = null;
-
     knownCanvases.set(canvas, this);
     if (canvas.isConnected) {
       registerEventHandler(canvas, this);
@@ -172,7 +170,6 @@ class CUIContextImpl implements CUIContext, IDisposable {
 
   // #region Public CUIContext API
   render = (root: React.ReactElement | React.FunctionComponentElement<any>) => {
-    debugger;
     if (this._rootContainer) {
       debugger;
     } else {

@@ -9,12 +9,12 @@
 			"request": "launch",
 			"name": "Start Webpack-Dev-Server",
 			"url": "http://localhost:8080",
-			"webRoot": "${workspaceFolder}/dist",
+			"webRoot": "${workspaceFolder:Environ}/dist",
 			"preLaunchTask": "npm: start",
 			"breakOnLoad": false,
 			"sourceMaps": true,
 			"sourceMapPathOverrides": {
-				"webpack:///./*": "${workspaceFolder}/src/*",
+				"webpack:///./*": "${workspaceFolder:Environ}/src/*",
 				"webpack:///*": "*"
 			}
 		}

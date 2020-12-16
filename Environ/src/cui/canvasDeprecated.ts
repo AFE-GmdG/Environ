@@ -19,9 +19,9 @@ export function render(canvas: HTMLCanvasElement) {
   });
 
   function updateSize(): void {
-    var rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    const { width, height } = canvas.getBoundingClientRect();
+    canvas.width = width;
+    canvas.height = height;
     gl!.viewport(0, 0, canvas.width, canvas.height);
   }
 

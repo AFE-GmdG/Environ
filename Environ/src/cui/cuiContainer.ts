@@ -1,6 +1,6 @@
-import { Alignment } from "./alignment";
+import { Alignment } from "./primitives/alignment";
 import { CUIContext } from "./cuiContext";
-import { Size } from "./size";
+import { Size } from "./primitives/size";
 
 export class CUIContainer {
   // #region Fields

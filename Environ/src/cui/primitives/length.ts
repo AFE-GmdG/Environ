@@ -1,14 +1,14 @@
-import { CUIContainer, isCUIContainer } from "./cuiContainer";
-import { CUIContext } from "./cuiContext";
-
-export type Unit = "px" | "%" | "em" | "rem";
+import { CUIContainer, isCUIContainer } from "../cuiContainer";
+import { CUIContext } from "../cuiContext";
+import { Orientation } from "./orientation";
+import { Unit } from "./unit";
 
 export class Length {
   value: number;
 
   unit: Unit;
 
-  constructor(value: number = 0, unit: Unit = "px") {
+  constructor(value: number = 0, unit: Unit = Unit.Px) {
     if (Number.isNaN(value) || !Number.isFinite(value) || value < 0) {
       throw new Error("The value must be a positive number.");
     }
@@ -17,13 +17,13 @@ export class Length {
     this.unit = unit;
   }
 
-  calculatePixel(element: CUIContainer | CUIContext, _orientation: "Horiziontal" | "Vertical" = "Horiziontal") {
-    if (this.unit === "px") {
+  calculatePixel(element: CUIContainer | CUIContext, _orientation: Orientation = Orientation.Horiziontal) {
+    if (this.unit === Unit.Px) {
       // eslint-disable-next-line no-bitwise
       return this.value | 0;
     }
 
-    if (this.unit === "rem") {
+    if (this.unit === Unit.Rem) {
       // eslint-disable-next-line no-bitwise
       return (this.value * 14) | 0;
     }
