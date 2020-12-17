@@ -1,6 +1,6 @@
-type DeboundeCallback = () => void;
-const debounceMap = new Map<DeboundeCallback, number>();
-export function debounce(cb: DeboundeCallback) {
+type DebounceCallback = () => void;
+const debounceMap = new Map<DebounceCallback, number>();
+export function debounce(cb: DebounceCallback) {
   let handle = debounceMap.get(cb);
   if (handle !== undefined) {
     window.clearTimeout(handle);

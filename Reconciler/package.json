@@ -1,29 +1,24 @@
 {
-  "name": "environ",
+  "name": "reconciler",
   "version": "0.0.1",
   "scripts": {
     "start": "webpack-dev-server --env=development",
     "prebuild:dev": "rimraf dist",
     "build:dev": "webpack --mode=development",
     "prebuild": "rimraf dist",
-    "build": "webpack --mode=production",
-    "predoc": "rimraf docs",
-    "doc": "typedoc"
+    "build": "webpack --mode=production"
   },
   "license": "MIT",
   "dependencies": {
     "react": "17.0.1",
-    "react-dom": "17.0.1",
     "react-reconciler": "0.26.1"
   },
   "devDependencies": {
-    "@types/lz-string": "1.3.34",
     "@types/react": "17.0.0",
-    "@types/react-dom": "17.0.0",
     "@types/react-reconciler": "0.18.0",
-    "@typescript-eslint/eslint-plugin": "4.9.0",
-    "@typescript-eslint/parser": "4.9.0",
-    "copy-webpack-plugin": "6.3.2",
+    "@typescript-eslint/eslint-plugin": "4.10.0",
+    "@typescript-eslint/parser": "4.10.0",
+    "copy-webpack-plugin": "6.4.1",
     "eslint": "7.15.0",
     "eslint-config-airbnb-typescript": "12.0.0",
     "eslint-plugin-import": "2.22.1",
@@ -32,11 +27,9 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "file-loader": "6.2.0",
     "html-webpack-plugin": "4.5.0",
-    "lz-string": "1.4.4",
     "raw-loader": "4.0.2",
     "rimraf": "3.0.2",
-    "ts-loader": "8.0.11",
-    "typedoc": "0.19.2",
+    "ts-loader": "8.0.12",
     "typescript": "4.1.3",
     "webpack": "^4",
     "webpack-cli": "^3",

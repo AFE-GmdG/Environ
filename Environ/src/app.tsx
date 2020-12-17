@@ -15,6 +15,8 @@ type AppProps = {
 };
 
 const CuiApp: React.FC<AppProps> = (props) => {
+  debugger;
+
   const { onClick } = props;
   const [isEnabled, setIsEnabled] = React.useState(true);
 
@@ -27,6 +29,8 @@ const CuiApp: React.FC<AppProps> = (props) => {
 };
 
 const ReactApp: React.FC<AppProps> = (props) => {
+  debugger;
+
   const { onClick } = props;
   const [isEnabled, setIsEnabled] = React.useState(true);
 

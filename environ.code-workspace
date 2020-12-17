@@ -5,6 +5,10 @@
 			"path": "./Environ"
 		},
 		{
+			"name": "Reconciler",
+			"path": "./Reconciler"
+		},
+		{
 			"name": "WebGL2 Tests",
 			"path": "./WebGL2"
 		},

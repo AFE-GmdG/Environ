@@ -1,7 +1,10 @@
+import * as ReactDOM from "react-dom";
 import { IDisposable } from "../disposable";
 import { CUIContainer } from "./cuiContainer";
 import { Margin } from "./primitives/margin";
 import { Size } from "./primitives/size";
+
+type ElementParameterOfReactDomRender = Parameters<ReactDOM.Renderer>[0][0];
 
 function registerEventHandler(canvas: HTMLCanvasElement, context: CUIContextImpl) {
   canvas.addEventListener("mousemove", context.onMouseMove);
@@ -44,8 +47,7 @@ export interface CUIContext extends IDisposable {
   readonly size: Size;
 
   // removeChild(child: CUIElement): CUIElement;
-  render(root: React.ReactElement): void;
-  render(root: React.FunctionComponentElement<any>): void;
+  render(root: ElementParameterOfReactDomRender): void;
   resize(): void;
   updateClearColor(clearColorRed: number, clearColorGreen: number, clearColorBlue: number): void;
 }
@@ -169,7 +171,7 @@ class CUIContextImpl implements CUIContext, IDisposable {
   // #endregion
 
   // #region Public CUIContext API
-  render = (root: React.ReactElement | React.FunctionComponentElement<any>) => {
+  render = (root: ElementParameterOfReactDomRender) => {
     if (this._rootContainer) {
       debugger;
     } else {
